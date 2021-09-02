@@ -20,4 +20,4 @@
     
 <i>The solver alghoritm shall be based on DFS algorithm and Algorithm X which was fully described in Knut book</i></td></tr>
  </table>
-<h4><p> &copy; All rights reserved 2021 Minsk,Belarus by Maxim Syromolotov and his team Vlad Kumische and Yaroslav Shumski</p></h4>
+<h4><p> &copy; All rights reserved 2021 Minsk,Belarus by Maxim Syromolotov and his team Vlad Kumishche and Yaroslav Shumski</p></h4>
