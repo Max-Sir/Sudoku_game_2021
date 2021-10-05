@@ -407,7 +407,73 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>668</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuNew_Game">
+    <property name="title">
+     <string>&amp;New Game</string>
+    </property>
+    <widget class="QMenu" name="menuEasy_2">
+     <property name="title">
+      <string>Easy</string>
+     </property>
+     <addaction name="actionLv_1"/>
+     <addaction name="actionLv_2"/>
+     <addaction name="actionLv_3"/>
+     <addaction name="actionLv_4"/>
+     <addaction name="actionRandom"/>
+    </widget>
+    <widget class="QMenu" name="menuNormal_2">
+     <property name="title">
+      <string>Normal</string>
+     </property>
+     <addaction name="actionLv_5"/>
+     <addaction name="actionLv_6"/>
+     <addaction name="actionLv_7"/>
+     <addaction name="actionLv_8"/>
+     <addaction name="actionRandom_2"/>
+    </widget>
+    <widget class="QMenu" name="menuHard_2">
+     <property name="title">
+      <string>Hard</string>
+     </property>
+     <addaction name="actionLv_9"/>
+     <addaction name="actionLv_10"/>
+     <addaction name="actionLv_11"/>
+     <addaction name="actionLv_12"/>
+     <addaction name="actionRandom_3"/>
+    </widget>
+    <widget class="QMenu" name="menuCrazy">
+     <property name="title">
+      <string>Crazy</string>
+     </property>
+     <addaction name="actionLv_13"/>
+     <addaction name="actionLv_14"/>
+     <addaction name="actionLv_15"/>
+     <addaction name="actionLv_16"/>
+     <addaction name="actionRandom_4"/>
+    </widget>
+    <widget class="QMenu" name="menuCustom">
+     <property name="title">
+      <string>Custom</string>
+     </property>
+     <addaction name="actionInput_Sudoku_Game"/>
+    </widget>
+    <addaction name="menuEasy_2"/>
+    <addaction name="menuNormal_2"/>
+    <addaction name="menuHard_2"/>
+    <addaction name="menuCrazy"/>
+    <addaction name="menuCustom"/>
+   </widget>
+   <addaction name="menuNew_Game"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
