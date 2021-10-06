@@ -22,6 +22,7 @@ private:
 public slots:
     int calc(int x);
     int solve(Matrix _,int lim=2);
+    int generate_range(int l,int r,int symm=0);
 signals:
 };
 
