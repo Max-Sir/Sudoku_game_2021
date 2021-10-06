@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Matrix m,prob,mark;//Matrix m is stored in binary mode, e.g. (100010010)2 means selecting number 1,5,8
 protected:
     void load_prob(int clear);
 };
