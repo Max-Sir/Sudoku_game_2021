@@ -17,5 +17,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+protected:
+    void load_prob(int clear);
 };
 #endif // MAINWINDOW_H
