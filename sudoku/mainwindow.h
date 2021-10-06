@@ -29,6 +29,7 @@ protected:
     QString change_bin_number_into_String(int);
     void addnumber(int);
     void deletegrid();
+	void show_info();
 
 private slots:
     
