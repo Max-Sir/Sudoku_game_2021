@@ -156,6 +156,58 @@ void MainWindow::load_prob(int clear)
     refresh_xy(1);
 }
 
+void MainWindow::show_solution(int origin)
+{
+    if(origin)//no custom node
+    {
+        double c0=clock();
+        sol.solve(prob,1);
+        c0=(clock()-c0)/CLOCKS_PER_SEC*1000;
+        ui->statusBar->showMessage(QStringLiteral("Solved. Using %1 ms").arg(c0));
+    }
+    else //custom mode
+    if(wrong_state)
+    {
+        ui->statusBar->showMessage("No solution!");
+        return;
+    }
+    else
+    {
+        Matrix tmp;
+        for(int i=0;i<9;++i)
+            for(int j=0;j<9;++j)
+                if(sol.calc(m.mtr[i][j])==1)
+                    tmp.mtr[i][j]=sol.idx[m.mtr[i][j]];
+                else
+                    tmp.mtr[i][j]=0;
+        int ans=sol.solve(tmp,2);
+        double c0=clock();
+        sol.solve(tmp,1);
+        c0=(clock()-c0)/CLOCKS_PER_SEC*1000;
+        if(ans==0)
+        {
+            //qDebug()<<"No solution";
+            ui->statusBar->showMessage(QStringLiteral("No solution! Using %1 ms").arg(c0));
+            return;
+        }
+        else if(ans==2)
+            ui->statusBar->showMessage(QStringLiteral("Multiple solution. Using %1 ms").arg(c0));
+        else
+            ui->statusBar->showMessage(QStringLiteral("Solved. Using %1 ms").arg(c0));
+    }
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+        {
+            if(prob.mtr[i][j]==0)
+            {button[i][j]->setStyleSheet("color:green");}
+
+            button[i][j]->setText(QString::number(sol.a.mtr[i][j]));
+            button[i][j]->setFlat(true);
+            button[i][j]->setFont(gamefont);
+            button[i][j]->setFocusPolicy(Qt::NoFocus);
+        }
+}
+
 void MainWindow::newgame()
 {
     //init game
