@@ -351,3 +351,17 @@ void MainWindow::show_info()
     mes+="\nНаслаждайтесь!\n";
     QMessageBox::information(this,tr("Игра Судоку сделанная студентами гр.950501"),mes);
 }
+void MainWindow::on_actionInfo_triggered()
+{
+    show_info();
+}
+
+void MainWindow::finish()
+{
+    state=3;
+    if(level==0)return;
+    Timer->stop();
+    QString s=Time_record->toString("hh:mm:ss");
+    s="    Вы решили этот пазл \nза "+s;
+    QMessageBox::information(this,tr("Поздравляю с решением!"),s,tr("Продолжить"));
+}
