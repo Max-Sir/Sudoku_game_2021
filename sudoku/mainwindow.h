@@ -29,10 +29,11 @@ protected:
     QString change_bin_number_into_String(int);
     void addnumber(int);
     void deletegrid();
-	void show_info();
+    void show_info();
+    void finish();
 
 private slots:
-    
+    void on_actionInfo_triggered();
     void on_actionLv_1_triggered();
     void on_actionLv_2_triggered();
     void on_actionLv_3_triggered();

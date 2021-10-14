@@ -332,9 +332,36 @@ void MainWindow::show_info()
     mes+="    Easy mode:   20~36 заполненных ячеек;\n";
     mes+="    Normal mode: 42~48 заполненных ячеек;\n";
     mes+="    Hard mode:   53~57 заполненных ячеек;\n";
-    mes+="    Crazy mode:  58~81 заполненных ячеек, **Наберитесь терпения**;\n";  
+    mes+="    Crazy mode:  58~81 заполненных ячеек, **Наберитесь терпения**;\n";
+    mes+="    Custom mode: Вы можете ввести своё судоку для получения решения/ответа;\n";
     mes+="\n";
     mes+="Эта программа гарантирует, что поля судоку в режимах Easy/Normal/Hard/Crazy имеют только одно решение.\n";
+    mes+="\n";
+    mes+="    Клавиши W/A/S/D or I/J/K/L: Up/Left/Down/Right;\n";
+    mes+="    Клавиши 1-9: добавить число в выбранную клетку;\n";
+    mes+="    Key M: установить флаг в выбранную клетку;\n";
+    mes+="    Клавиша Del: удалить все значения в выбранной ячейке;\n";
+    mes+="    Клавиша Пробел: пауза/продолжить;\n";
+    mes+="    Ctrl+I: Custom mode (Пользовательский режим);\n";
+    mes+="    Ctrl+Z: Шаг назад;\n";
+    mes+="    Ctrl+Y: Шаг вперёд;\n";
+    mes+="    Ctrl+M: Включить/Остановить музыку;\n";
+    mes+="    Alt+I: Показать данное окно;\n";
+    mes+="    Ctrl+R: новое Random Crazy поле;\n";
     mes+="\nНаслаждайтесь!\n";
-    
+    QMessageBox::information(this,tr("Игра Судоку сделанная студентами гр.950501"),mes);
+}
+void MainWindow::on_actionInfo_triggered()
+{
+    show_info();
+}
+
+void MainWindow::finish()
+{
+    state=3;
+    if(level==0)return;
+    Timer->stop();
+    QString s=Time_record->toString("hh:mm:ss");
+    s="    Вы решили этот пазл \nза "+s;
+    QMessageBox::information(this,tr("Поздравляю с решением!"),s,tr("Продолжить"));
 }
