@@ -208,6 +208,109 @@ void MainWindow::show_solution(int origin)
         }
 }
 
+void MainWindow::refresh_xy(int add)
+{
+    if(add && (m!=history[history.length()-1] || mark!=hmark[hmark.length()-1]))
+    {
+        history_temp=history.length();
+        history.append(m);
+        hx.append(select_x);
+        hy.append(select_y);
+        hmark.append(mark);
+    }
+    //set normal grid
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+            if(prob.mtr[i][j])
+            {//здесь начальные клетки поля чёрные black
+                button[i][j]->setText(change_bin_number_into_String(m.mtr[i][j]));
+                button[i][j]->setStyleSheet("color:black;background-color:white");
+                button[i][j]->setFlat(true);
+                button[i][j]->setFont(gamefont);
+            }
+            else
+            {   //вставленные пользователем правильные клетки под условие green
+                button[i][j]->setStyleSheet("color:green;background-color:white");
+                button[i][j]->setFont(gamefont);
+                if(m.mtr[i][j])
+                {
+                    if(sol.calc(m.mtr[i][j])>1)
+                    {//число чисел в ячейке>1 gray
+                        button[i][j]->setStyleSheet("color:gray;background-color:white");
+                        button[i][j]->setFont(smallfont);
+                    }
+                    button[i][j]->setText(change_bin_number_into_String(m.mtr[i][j]));
+                }
+                else
+                {
+                    button[i][j]->setText(QString(" "));
+                    button[i][j]->setAutoFillBackground(true);
+                }
+                button[i][j]->setFlat(true);
+            }
+    //set highlight grid текужая активная клетка если подходит по условию blue
+    button[select_x][select_y]->setStyleSheet("color:blue;background-color:white");
+    button[select_x][select_y]->setFocusPolicy(Qt::NoFocus);
+    if(m.mtr[select_x][select_y]==0)
+        for(int i=0;i<9;++i)
+        {
+            button[i][select_y]->setFlat(true);
+            button[select_x][i]->setFlat(true);
+        }
+    else if(sol.calc(m.mtr[select_x][select_y])==1)
+    {
+        for(int i=0;i<9;++i)
+            for(int j=0;j<9;++j)
+                if(m.mtr[i][j]==m.mtr[select_x][select_y])
+                    button[i][j]->setFlat(true);
+    }
+    //set wrong grid не подходит под условие заполнения значит red
+    int wrong_cnt=0,acc_cnt=0;
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+            if(prob.mtr[i][j]==0 && sol.calc(m.mtr[i][j])==1)
+            {
+                acc_cnt++;
+                if(checkavailable(i,j)==0)
+                {
+                    button[i][j]->setStyleSheet("color:red;background-color:white");
+                    wrong_cnt++;
+                }
+            }
+            else if(prob.mtr[i][j]&&checkavailable(i,j)==0)
+                wrong_cnt++;
+    if(wrong_cnt){wrong_state=1;}
+    else{ wrong_state=0;}
+    button[select_x][select_y]->setFlat(true);
+    button[select_x][select_y]->setAutoFillBackground(false);
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+        {
+            button[i][j]->setFocusPolicy(Qt::NoFocus);
+            button[i][j]->setDisabled(false);
+            button[i][j]->setAutoDefault(false);
+            button[i][j]->setDefault(false);
+            button[i][j]->setAutoExclusive(false);
+        }
+    button[select_x][select_y]->setAutoDefault(true);
+    button[select_x][select_y]->setDefault(true);
+    QIcon Ic0,Ic1;
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+            if(mark.mtr[i][j])
+            {
+                Ic1.addFile(QStringLiteral(":/fig/mark"));
+                button[i][j]->setIcon(Ic1);
+            }
+            else
+                button[i][j]->setIcon(Ic0);
+    QString px("ABCDEFGHI"),py("123456789");
+    ui->statusBar->showMessage("("+px[select_x]+","+py[select_y]+")");
+    //update();
+    if(wrong_cnt==0 && acc_cnt==prob.count_0() && level)
+        finish();
+}
+
 void MainWindow::newgame()
 {
     //init game
