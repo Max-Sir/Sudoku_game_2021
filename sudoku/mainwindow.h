@@ -25,6 +25,7 @@ protected:
     void continuegame();
     void load_prob(int clear);
     void show_solution(int origin);
+    void refresh_xy(int add);
     void show_tip();
     int checkavailable(int,int);
     QString change_bin_number_into_String(int);
