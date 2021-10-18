@@ -437,6 +437,40 @@ int MainWindow::checkavailable(int i,int j)
     return 1;
 }
 
+void MainWindow::on_mark_button_clicked()
+{
+    if(state!=1)return;
+    mark_grid();
+}
+
+void MainWindow::on_del_button_clicked()
+{
+    //qDebug()<<"delete "<<state;
+    if(state!=1)return;
+    deletegrid();
+    refresh_xy(1);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    if(state!=1)return;
+    show_tip();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    if(stage)stage=(stage+1)%5;
+    newgame();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    if(state!=1)return;
+    if(level)
+        show_solution(1);
+    else
+        show_solution(0);
+}
 
 void MainWindow::on_actionLv_1_triggered(){level=1;stage=1;newgame();}
 void MainWindow::on_actionLv_2_triggered(){level=1;stage=2;newgame();}
