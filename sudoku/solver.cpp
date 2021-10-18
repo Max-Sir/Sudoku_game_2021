@@ -131,3 +131,22 @@ int Solver::solve(Matrix _,int lim){//решает судоку
 
     return ans;
 }
+
+int Solver::generate_range(int l,int r,int symm)
+{
+    while(generate(symm),a.count_0()<l);
+    if(a.count_0()>r)
+    {
+        tmp_m=a;
+        solve(tmp_m,1);
+        int target=rand()%(r-l+1)+l;
+        for(int i=cnt;i>0 && tmp_m.count_0()>target;--i)
+        {
+            tmp_m.mtr[q[i].x][q[i].y]=a.mtr[q[i].x][q[i].y];
+            if(symm)
+            {tmp_m.mtr[8-q[i].x][8-q[i].y]=a.mtr[8-q[i].x][8-q[i].y];}
+        }
+        a=tmp_m;
+    }
+    return a.count_0();
+}
