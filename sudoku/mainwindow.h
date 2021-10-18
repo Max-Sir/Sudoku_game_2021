@@ -46,6 +46,11 @@ protected:
     void finish();
 
 private slots:
+    void on_mark_button_clicked();
+    void on_del_button_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_clicked();
+    void on_pushButton_3_clicked();
     void on_actionInfo_triggered();
     void on_actionLv_1_triggered();
     void on_actionLv_2_triggered();
