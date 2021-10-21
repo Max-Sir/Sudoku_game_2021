@@ -139,6 +139,7 @@ int Solver::solve(Matrix _, int lim) {//решает судоку
     return ans;
 }
 
+
 int Solver::generate_range(int l, int r, int symm)
 {
     while (generate(symm), a.count_0() < l);

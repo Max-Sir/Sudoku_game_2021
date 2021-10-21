@@ -156,6 +156,161 @@ void MainWindow::load_prob(int clear)
     refresh_xy(1);
 }
 
+void MainWindow::show_solution(int origin)
+{
+    if(origin)//no custom node
+    {
+        double c0=clock();
+        sol.solve(prob,1);
+        c0=(clock()-c0)/CLOCKS_PER_SEC*1000;
+        ui->statusBar->showMessage(QStringLiteral("Solved. Using %1 ms").arg(c0));
+    }
+    else //custom mode
+    if(wrong_state)
+    {
+        ui->statusBar->showMessage("No solution!");
+        return;
+    }
+    else
+    {
+        Matrix tmp;
+        for(int i=0;i<9;++i)
+            for(int j=0;j<9;++j)
+                if(sol.calc(m.mtr[i][j])==1)
+                    tmp.mtr[i][j]=sol.idx[m.mtr[i][j]];
+                else
+                    tmp.mtr[i][j]=0;
+        int ans=sol.solve(tmp,2);
+        double c0=clock();
+        sol.solve(tmp,1);
+        c0=(clock()-c0)/CLOCKS_PER_SEC*1000;
+        if(ans==0)
+        {
+            //qDebug()<<"No solution";
+            ui->statusBar->showMessage(QStringLiteral("No solution! Using %1 ms").arg(c0));
+            return;
+        }
+        else if(ans==2)
+            ui->statusBar->showMessage(QStringLiteral("Multiple solution. Using %1 ms").arg(c0));
+        else
+            ui->statusBar->showMessage(QStringLiteral("Solved. Using %1 ms").arg(c0));
+    }
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+        {
+            if(prob.mtr[i][j]==0)
+            {button[i][j]->setStyleSheet("color:green");}
+
+            button[i][j]->setText(QString::number(sol.a.mtr[i][j]));
+            button[i][j]->setFlat(true);
+            button[i][j]->setFont(gamefont);
+            button[i][j]->setFocusPolicy(Qt::NoFocus);
+        }
+}
+
+void MainWindow::refresh_xy(int add)
+{
+    if(add && (m!=history[history.length()-1] || mark!=hmark[hmark.length()-1]))
+    {
+        history_temp=history.length();
+        history.append(m);
+        hx.append(select_x);
+        hy.append(select_y);
+        hmark.append(mark);
+    }
+    //set normal grid
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+            if(prob.mtr[i][j])
+            {//здесь начальные клетки поля чёрные black
+                button[i][j]->setText(change_bin_number_into_String(m.mtr[i][j]));
+                button[i][j]->setStyleSheet("color:black;background-color:white");
+                button[i][j]->setFlat(true);
+                button[i][j]->setFont(gamefont);
+            }
+            else
+            {   //вставленные пользователем правильные клетки под условие green
+                button[i][j]->setStyleSheet("color:green;background-color:white");
+                button[i][j]->setFont(gamefont);
+                if(m.mtr[i][j])
+                {
+                    if(sol.calc(m.mtr[i][j])>1)
+                    {//число чисел в ячейке>1 gray
+                        button[i][j]->setStyleSheet("color:gray;background-color:white");
+                        button[i][j]->setFont(smallfont);
+                    }
+                    button[i][j]->setText(change_bin_number_into_String(m.mtr[i][j]));
+                }
+                else
+                {
+                    button[i][j]->setText(QString(" "));
+                    button[i][j]->setAutoFillBackground(true);
+                }
+                button[i][j]->setFlat(true);
+            }
+    //set highlight grid текужая активная клетка если подходит по условию blue
+    button[select_x][select_y]->setStyleSheet("color:blue;background-color:white");
+    button[select_x][select_y]->setFocusPolicy(Qt::NoFocus);
+    if(m.mtr[select_x][select_y]==0)
+        for(int i=0;i<9;++i)
+        {
+            button[i][select_y]->setFlat(true);
+            button[select_x][i]->setFlat(true);
+        }
+    else if(sol.calc(m.mtr[select_x][select_y])==1)
+    {
+        for(int i=0;i<9;++i)
+            for(int j=0;j<9;++j)
+                if(m.mtr[i][j]==m.mtr[select_x][select_y])
+                    button[i][j]->setFlat(true);
+    }
+    //set wrong grid не подходит под условие заполнения значит red
+    int wrong_cnt=0,acc_cnt=0;
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+            if(prob.mtr[i][j]==0 && sol.calc(m.mtr[i][j])==1)
+            {
+                acc_cnt++;
+                if(checkavailable(i,j)==0)
+                {
+                    button[i][j]->setStyleSheet("color:red;background-color:white");
+                    wrong_cnt++;
+                }
+            }
+            else if(prob.mtr[i][j]&&checkavailable(i,j)==0)
+                wrong_cnt++;
+    if(wrong_cnt){wrong_state=1;}
+    else{ wrong_state=0;}
+    button[select_x][select_y]->setFlat(true);
+    button[select_x][select_y]->setAutoFillBackground(false);
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+        {
+            button[i][j]->setFocusPolicy(Qt::NoFocus);
+            button[i][j]->setDisabled(false);
+            button[i][j]->setAutoDefault(false);
+            button[i][j]->setDefault(false);
+            button[i][j]->setAutoExclusive(false);
+        }
+    button[select_x][select_y]->setAutoDefault(true);
+    button[select_x][select_y]->setDefault(true);
+    QIcon Ic0,Ic1;
+    for(int i=0;i<9;++i)
+        for(int j=0;j<9;++j)
+            if(mark.mtr[i][j])
+            {
+                Ic1.addFile(QStringLiteral(":/fig/mark"));
+                button[i][j]->setIcon(Ic1);
+            }
+            else
+                button[i][j]->setIcon(Ic0);
+    QString px("ABCDEFGHI"),py("123456789");
+    ui->statusBar->showMessage("("+px[select_x]+","+py[select_y]+")");
+    //update();
+    if(wrong_cnt==0 && acc_cnt==prob.count_0() && level)
+        finish();
+}
+
 void MainWindow::newgame()
 {
     //init game
@@ -282,7 +437,67 @@ int MainWindow::checkavailable(int i,int j)
     return 1;
 }
 
+void MainWindow::on_mark_button_clicked()
+{
+    if(state!=1)return;
+    mark_grid();
+}
 
+void MainWindow::on_del_button_clicked()
+{
+    //qDebug()<<"delete "<<state;
+    if(state!=1)return;
+    deletegrid();
+    refresh_xy(1);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    if(state!=1)return;
+    show_tip();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    if(stage)stage=(stage+1)%5;
+    newgame();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    if(state!=1)return;
+    if(level)
+        show_solution(1);
+    else
+        show_solution(0);
+}
+
+void MainWindow::on_actionReset_triggered()
+{
+    if(state!=1)return;
+    load_prob(0);
+}
+void MainWindow::on_actionSolve_triggered()
+{
+    if(state!=1)return;
+    show_solution(0);
+}
+
+void MainWindow::on_actionPause_triggered()
+{
+    if(state==1)
+        pause();
+    else if(state==2)
+        continuegame();
+}
+
+void MainWindow::on_actionStart_triggered()
+{
+    continuegame();
+}
+
+void MainWindow::on_actionUndo_triggered(){if(state!=1)return;undo();}
+void MainWindow::on_actionRedo_triggered(){if(state!=1)return;redo();}
 void MainWindow::on_actionLv_1_triggered(){level=1;stage=1;newgame();}
 void MainWindow::on_actionLv_2_triggered(){level=1;stage=2;newgame();}
 void MainWindow::on_actionLv_3_triggered(){level=1;stage=3;newgame();}
@@ -332,9 +547,36 @@ void MainWindow::show_info()
     mes+="    Easy mode:   20~36 заполненных ячеек;\n";
     mes+="    Normal mode: 42~48 заполненных ячеек;\n";
     mes+="    Hard mode:   53~57 заполненных ячеек;\n";
-    mes+="    Crazy mode:  58~81 заполненных ячеек, **Наберитесь терпения**;\n";  
+    mes+="    Crazy mode:  58~81 заполненных ячеек, **Наберитесь терпения**;\n";
+    mes+="    Custom mode: Вы можете ввести своё судоку для получения решения/ответа;\n";
     mes+="\n";
     mes+="Эта программа гарантирует, что поля судоку в режимах Easy/Normal/Hard/Crazy имеют только одно решение.\n";
+    mes+="\n";
+    mes+="    Клавиши W/A/S/D or I/J/K/L: Up/Left/Down/Right;\n";
+    mes+="    Клавиши 1-9: добавить число в выбранную клетку;\n";
+    mes+="    Key M: установить флаг в выбранную клетку;\n";
+    mes+="    Клавиша Del: удалить все значения в выбранной ячейке;\n";
+    mes+="    Клавиша Пробел: пауза/продолжить;\n";
+    mes+="    Ctrl+I: Custom mode (Пользовательский режим);\n";
+    mes+="    Ctrl+Z: Шаг назад;\n";
+    mes+="    Ctrl+Y: Шаг вперёд;\n";
+    mes+="    Ctrl+M: Включить/Остановить музыку;\n";
+    mes+="    Alt+I: Показать данное окно;\n";
+    mes+="    Ctrl+R: новое Random Crazy поле;\n";
     mes+="\nНаслаждайтесь!\n";
-    
+    QMessageBox::information(this,tr("Игра Судоку сделанная студентами гр.950501"),mes);
+}
+void MainWindow::on_actionInfo_triggered()
+{
+    show_info();
+}
+
+void MainWindow::finish()
+{
+    state=3;
+    if(level==0)return;
+    Timer->stop();
+    QString s=Time_record->toString("hh:mm:ss");
+    s="    Вы решили этот пазл \nза "+s;
+    QMessageBox::information(this,tr("Поздравляю с решением!"),s,tr("Продолжить"));
 }
