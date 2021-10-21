@@ -52,6 +52,12 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_3_clicked();
     void on_actionInfo_triggered();
+    void on_actionReset_triggered();
+    void on_actionSolve_triggered();
+    void on_actionPause_triggered();
+    void on_actionStart_triggered();
+    void on_actionUndo_triggered();
+    void on_actionRedo_triggered();
     void on_actionLv_1_triggered();
     void on_actionLv_2_triggered();
     void on_actionLv_3_triggered();

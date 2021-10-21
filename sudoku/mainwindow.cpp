@@ -472,6 +472,32 @@ void MainWindow::on_pushButton_3_clicked()
         show_solution(0);
 }
 
+void MainWindow::on_actionReset_triggered()
+{
+    if(state!=1)return;
+    load_prob(0);
+}
+void MainWindow::on_actionSolve_triggered()
+{
+    if(state!=1)return;
+    show_solution(0);
+}
+
+void MainWindow::on_actionPause_triggered()
+{
+    if(state==1)
+        pause();
+    else if(state==2)
+        continuegame();
+}
+
+void MainWindow::on_actionStart_triggered()
+{
+    continuegame();
+}
+
+void MainWindow::on_actionUndo_triggered(){if(state!=1)return;undo();}
+void MainWindow::on_actionRedo_triggered(){if(state!=1)return;redo();}
 void MainWindow::on_actionLv_1_triggered(){level=1;stage=1;newgame();}
 void MainWindow::on_actionLv_2_triggered(){level=1;stage=2;newgame();}
 void MainWindow::on_actionLv_3_triggered(){level=1;stage=3;newgame();}
