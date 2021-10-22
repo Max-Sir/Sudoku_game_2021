@@ -27,6 +27,12 @@ public:
     }
 };
 
+struct Trip
+{
+    int x;
+    int y;
+    int v;
+};
 
 #endif // CONFIG}
 
