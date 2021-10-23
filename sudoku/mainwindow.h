@@ -10,37 +10,37 @@
 #include <QTableWidget>
 #include <QVector>
 #include <QMediaPlayer>
-#include "solver.h"
+#include "solver.h" 
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    qint32 now, flag;
-    QTimer* Timer;
-    QTime* Time_record;
-    qint32 select_x, select_y, wrong_state;
-    Matrix m, prob, mark;//Matrix m is stored in binary mode, e.g. (100010010)2 means selecting number 1,5,8
+    qint32 now,flag;
+    QTimer*Timer;
+    QTime*Time_record;
+    qint32 select_x,select_y,wrong_state;
+    Matrix m,prob,mark;//Matrix m is stored in binary mode, e.g. (100010010)2 means selecting number 1,5,8
     Solver sol;
     qint32 stage,//0:random 1-4:...
         level,//0:custom, 1:easy, 2:normal, 3:hard, 4:crazy
         state,//0:empty, 1:start, 2:pause, 3:end
         history_temp;//количество записей в истории/ current index of history
-    QVector<Matrix> history, hmark;
-    QVector<qint32>hx, hy;
+    QVector<Matrix> history,hmark;
+    QVector<qint32>hx,hy;
     QMediaPlayer* player;
 public:
-    explicit MainWindow(QWidget* parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private:
-    Ui::MainWindow* ui;
-    QPushButton*** button, ** num, * record_button, * delete_button;
+    Ui::MainWindow *ui;
+    QPushButton ***button,**num,*record_button,*delete_button;
 protected:
-    void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent *);
     void newgame();
     void pause();
     void continuegame();
@@ -54,7 +54,7 @@ protected:
     void mark_grid();
     void finish();
     void timer_start();
-    int checkavailable(int, int);
+    int checkavailable(int,int);
     QString change_bin_number_into_String(int);
     void addnumber(int);
     void deletegrid();
