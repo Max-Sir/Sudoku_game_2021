@@ -666,8 +666,19 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_actionReset_triggered()
 {
-    if(state!=1)return;
-    load_prob(0);
+    if (state == 3)
+    {
+        sol.solve(prob,1);
+        prob.print();
+        load_prob(1);
+        state=1;
+        timer_start();
+    }
+    else if (state == 1)
+    {
+        load_prob(0);
+        state = 1;
+    }
 }
 
 void MainWindow::on_actionSolve_triggered()
