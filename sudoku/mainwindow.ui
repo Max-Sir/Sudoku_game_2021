@@ -423,7 +423,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNew_Game">
@@ -482,7 +482,14 @@
     <addaction name="menuCrazy"/>
     <addaction name="menuCustom"/>
    </widget>
+   <widget class="QMenu" name="menuleaderboard">
+    <property name="title">
+     <string>leaderboard</string>
+    </property>
+    <addaction name="actionrecords_of_that_session"/>
+   </widget>
    <addaction name="menuNew_Game"/>
+   <addaction name="menuleaderboard"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="autoFillBackground">
@@ -522,7 +529,7 @@
   </action>
   <action name="actionStart">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/play</normaloff>:/fig/play</iconset>
    </property>
    <property name="text">
@@ -531,7 +538,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/prev</normaloff>:/fig/prev</iconset>
    </property>
    <property name="text">
@@ -546,7 +553,7 @@
   </action>
   <action name="actionReset">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/previous</normaloff>:/fig/previous</iconset>
    </property>
    <property name="text">
@@ -561,7 +568,7 @@
   </action>
   <action name="actionPause">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/pause</normaloff>:/fig/pause</iconset>
    </property>
    <property name="text">
@@ -576,7 +583,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/next</normaloff>:/fig/next</iconset>
    </property>
    <property name="text">
@@ -591,7 +598,7 @@
   </action>
   <action name="actionNew">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/shuffle</normaloff>:/fig/shuffle</iconset>
    </property>
    <property name="text">
@@ -603,7 +610,7 @@
   </action>
   <action name="actionDelete">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/minus</normaloff>:/fig/minus</iconset>
    </property>
    <property name="text">
@@ -615,7 +622,7 @@
   </action>
   <action name="actionSolve">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/calc</normaloff>:/fig/calc</iconset>
    </property>
    <property name="text">
@@ -809,7 +816,7 @@
   </action>
   <action name="actionMusic">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/fig/mute</normaloff>:/fig/mute</iconset>
    </property>
    <property name="text">
@@ -820,6 +827,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionrecords_of_that_session">
+   <property name="text">
+    <string>records of that session</string>
    </property>
   </action>
  </widget>

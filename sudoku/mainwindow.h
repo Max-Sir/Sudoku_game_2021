@@ -96,6 +96,7 @@ private slots:
     void on_actionRandom_4_triggered();
     void on_actionInput_Sudoku_Game_triggered();
     void on_actionMusic_triggered();
+    void on_actionrecords_of_that_session_triggered();
 };
 
 #endif // MAINWINDOW_H
