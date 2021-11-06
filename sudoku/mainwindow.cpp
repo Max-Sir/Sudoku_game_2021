@@ -14,6 +14,8 @@
 
 static QFont gamefont("Ubuntu",16);
 static QFont smallfont("Ubuntu",10);
+static QString results = "";
+static int uidWinner = 1;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -593,6 +595,7 @@ void MainWindow::finish()
     if(level==0)return;
     Timer->stop();
     QString s=Time_record->toString("hh:mm:ss");
+    results += QString::number(uidWinner++) + ". решил за " + s + "\n";
     s="    Вы решили этот пазл \nза "+s;
     QMessageBox::information(this,tr("Поздравляю с решением!"),s,tr("Продолжить"));
 }
@@ -771,4 +774,9 @@ void MainWindow::on_actionMusic_triggered()
         player->setVolume(30);
         player->play();
     }
+}
+
+void MainWindow::on_actionrecords_of_that_session_triggered()
+{
+    QMessageBox::information(this,tr("Leaders records"),results,tr("🥇"));
 }
